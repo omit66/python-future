@@ -3,17 +3,15 @@
 Based on lib2to3/tests/test_fixers.py
 
 """
-# Support code for test_*.py files, from lib2to3/tests/support.py by Collin Winter:
+# Support code for test_*.py files, from lib2to3/tests/support.py by Collin
+# Winter:
 
 # Python imports
-import sys
 import os
 import os.path
 from itertools import chain
 from textwrap import dedent
-from operator import itemgetter
-from lib2to3 import pygram, pytree, refactor, fixer_util
-from lib2to3.pgen2 import driver
+from lib2to3 import pygram, refactor, fixer_util
 
 # Local imports
 from future.tests.base import unittest
@@ -29,13 +27,16 @@ proj_dir = os.path.normpath(os.path.join(test_dir, ".."))
 # def parse_string(string):
 #     return driver.parse_string(reformat(string), debug=True)
 
+
 def run_all_tests(test_mod=None, tests=None):
     if tests is None:
         tests = unittest.TestLoader().loadTestsFromModule(test_mod)
     unittest.TextTestRunner(verbosity=2).run(tests)
 
+
 def reformat(string):
     return dedent(string) + u"\n\n"
+
 
 def get_refactorer(fixer_pkg="lib2to3", fixers=None, options=None):
     """
@@ -51,6 +52,7 @@ def get_refactorer(fixer_pkg="lib2to3", fixers=None, options=None):
         fixers = refactor.get_fixers_from_package(fixer_pkg + ".fixes")
     options = options or {}
     return refactor.RefactoringTool(fixers, options, explicit=True)
+
 
 def all_project_files():
     for dirpath, dirnames, filenames in os.walk(proj_dir):
@@ -113,11 +115,12 @@ class FixerTestCase(unittest.TestCase):
         if pre and pre[-1].__class__.__module__.endswith(n) and not post:
             # We're the last in pre and post is empty
             return
-        self.fail("Fixer run order (%s) is incorrect; %s should be last."\
-               %(", ".join([x.__class__.__module__ for x in (pre+post)]), n))
+        self.fail("Fixer run order (%s) is incorrect; %s should be last."
+                  % (", ".join([x.__class__.__module__ for x in (pre + post)]),
+                     n))
 
 
-############### EDIT the tests below ...
+# TODO EDIT the tests below ...
 #
 # class Test_ne(FixerTestCase):
 #     fixer = "ne"
@@ -764,15 +767,18 @@ class Test_print(FixerTestCase):
 #
 #     def test_string_exc(self):
 #         s = """raise 'foo'"""
-#         self.warns_unchanged(s, "Python 3 does not support string exceptions")
+#         self.warns_unchanged(s,
+#                              "Python 3 does not support string exceptions")
 #
 #     def test_string_exc_val(self):
 #         s = """raise "foo", 5"""
-#         self.warns_unchanged(s, "Python 3 does not support string exceptions")
+#         self.warns_unchanged(s,
+#                              "Python 3 does not support string exceptions")
 #
 #     def test_string_exc_val_tb(self):
 #         s = """raise "foo", 5, 6"""
-#         self.warns_unchanged(s, "Python 3 does not support string exceptions")
+#         self.warns_unchanged(s,
+#                              "Python 3 does not support string exceptions")
 #
 #     # These should result in traceback-assignment
 #
@@ -857,15 +863,18 @@ class Test_print(FixerTestCase):
 #
 #     def test_warn_1(self):
 #         s = """g.throw("foo")"""
-#         self.warns_unchanged(s, "Python 3 does not support string exceptions")
+#         self.warns_unchanged(s,
+#                              "Python 3 does not support string exceptions")
 #
 #     def test_warn_2(self):
 #         s = """g.throw("foo", 5)"""
-#         self.warns_unchanged(s, "Python 3 does not support string exceptions")
+#         self.warns_unchanged(s,
+#                              "Python 3 does not support string exceptions")
 #
 #     def test_warn_3(self):
 #         s = """g.throw("foo", 5, 6)"""
-#         self.warns_unchanged(s, "Python 3 does not support string exceptions")
+#         self.warns_unchanged(s,
+#                              "Python 3 does not support string exceptions")
 #
 #     # These should not be touched
 #
@@ -1018,7 +1027,8 @@ class Test_print(FixerTestCase):
 #         self.check(b, a)
 #
 #         b = """execfile("fn", globals=glob)"""
-#         a = """exec(compile(open("fn").read(), "fn", 'exec'), globals=glob)"""
+#         a = """exec(compile(open("fn").read(), "fn", 'exec'),
+#                             globals=glob)"""
 #         self.check(b, a)
 #
 #         b = """execfile("fn", locals=loc)"""
@@ -1026,7 +1036,8 @@ class Test_print(FixerTestCase):
 #         self.check(b, a)
 #
 #         b = """execfile("fn", globals=glob, locals=loc)"""
-#         a = """exec(compile(open("fn").read(), "fn", 'exec'), globals=glob, locals=loc)"""
+#         a = """exec(compile(open("fn").read(), "fn", 'exec'),
+#                             globals=glob, locals=loc)"""
 #         self.check(b, a)
 #
 #     def test_spacing(self):
@@ -1035,7 +1046,8 @@ class Test_print(FixerTestCase):
 #         self.check(b, a)
 #
 #         b = """execfile("fn",  globals = glob)"""
-#         a = """exec(compile(open("fn").read(), "fn", 'exec'),  globals = glob)"""
+#         a = """exec(compile(open("fn").read(), "fn", 'exec'),
+#                                  globals = glob)"""
 #         self.check(b, a)
 #
 #
@@ -1682,8 +1694,10 @@ class Test_print(FixerTestCase):
 #                     b = "from %s import %s as foo_bar" % (old, member)
 #                     a = "from %s import %s as foo_bar" % (new, member)
 #                     self.check(b, a)
-#                     b = "from %s import %s as blah, %s" % (old, member, member)
-#                     a = "from %s import %s as blah, %s" % (new, member, member)
+#                     b = "from %s import %s as blah, %s"
+#                          % (old, member, member)
+#                     a = "from %s import %s as blah, %s"
+#                          % (new, member, member)
 #                     self.check(b, a)
 #
 #     def test_star(self):
@@ -1844,7 +1858,8 @@ class Test_print(FixerTestCase):
 #             def foo(((a, b), c)): x = 5; y = 7"""
 #
 #         a = """
-#             def foo(xxx_todo_changeme): ((a, b), c) = xxx_todo_changeme; x = 5; y = 7"""
+#             def foo(xxx_todo_changeme): ((a, b), c) = xxx_todo_changeme;
+#             x = 5; y = 7"""
 #         self.check(b, a)
 #
 #     def test_keywords(self):
@@ -2862,7 +2877,8 @@ class Test_print(FixerTestCase):
 #         self.unchanged(a)
 #
 #         b = """from future_builtins import spam; x = filter(f, 'abc')"""
-#         a = """from future_builtins import spam; x = list(filter(f, 'abc'))"""
+#         a = """from future_builtins import spam;
+# x = list(filter(f, 'abc'))"""
 #         self.check(b, a)
 #
 #         a = "from future_builtins import *; filter(f, 'ham')"
@@ -2974,7 +2990,8 @@ class Test_print(FixerTestCase):
 #         self.unchanged(a)
 #
 #         b = """from future_builtins import spam, eggs; x = map(f, 'abc')"""
-#         a = """from future_builtins import spam, eggs; x = list(map(f, 'abc'))"""
+#         a = """from future_builtins import spam, eggs;
+# x = list(map(f, 'abc'))"""
 #         self.check(b, a)
 #
 #         a = "from future_builtins import *; map(f, 'ham')"
@@ -3644,8 +3661,10 @@ class Test_print(FixerTestCase):
 #
 #         self.always_exists = False
 #         self.present_files = set(['__init__.py'])
-#         expected_extensions = ('.py', os.path.sep, '.pyc', '.so', '.sl', '.pyd')
-#         names_to_test = (p("/spam/eggs.py"), "ni.py", p("../../shrubbery.py"))
+#         expected_extensions = ('.py', os.path.sep, '.pyc',
+# '.so', '.sl', '.pyd')
+#         names_to_test = (p("/spam/eggs.py"), "ni.py",
+# p("../../shrubbery.py"))
 #
 #         for name in names_to_test:
 #             self.files_checked = []
@@ -4410,56 +4429,56 @@ class Test_dict(FixerTestCase):
 
     def test_prefix_preservation(self):
         b = "if   d. keys  (  )  : pass"
-        a = "if   list(d. keys  (  ))  : pass"
+        a = "if   list(d)  : pass"
         self.check(b, a)
 
         b = "if   d. items  (  )  : pass"
-        a = "if   list(d. items  (  ))  : pass"
+        a = "from future.utils import listitems\nif   listitems(d)  : pass"
         self.check(b, a)
 
         b = "if   d. iterkeys  ( )  : pass"
-        a = "if   iter(d. keys  ( ))  : pass"
+        a = "from six import iterkeys\nif   iterkeys(d)  : pass"
         self.check(b, a)
 
         b = "[i for i in    d.  iterkeys(  )  ]"
-        a = "[i for i in    d.  keys(  )  ]"
+        a = "from six import iterkeys\n[i for i in    iterkeys(d)  ]"
         self.check(b, a)
 
         b = "if   d. viewkeys  ( )  : pass"
-        a = "if   d. keys  ( )  : pass"
+        a = "from six import viewkeys\nif   viewkeys(d)  : pass"
         self.check(b, a)
 
         b = "[i for i in    d.  viewkeys(  )  ]"
-        a = "[i for i in    d.  keys(  )  ]"
+        a = "from six import viewkeys\n[i for i in    viewkeys(d)  ]"
         self.check(b, a)
 
     def test_trailing_comment(self):
         b = "d.keys() # foo"
-        a = "list(d.keys()) # foo"
+        a = "list(d) # foo"
         self.check(b, a)
 
         b = "d.items()  # foo"
-        a = "list(d.items())  # foo"
+        a = "from future.utils import listitems\nlistitems(d)  # foo"
         self.check(b, a)
 
         b = "d.iterkeys()  # foo"
-        a = "iter(d.keys())  # foo"
+        a = "from six import iterkeys\niterkeys(d)  # foo"
         self.check(b, a)
 
         b = """[i for i in d.iterkeys() # foo
                ]"""
-        a = """[i for i in d.keys() # foo
+        a = """from six import iterkeys\n[i for i in iterkeys(d) # foo
                ]"""
         self.check(b, a)
 
         b = """[i for i in d.iterkeys() # foo
                ]"""
-        a = """[i for i in d.keys() # foo
+        a = """from six import iterkeys\n[i for i in iterkeys(d) # foo
                ]"""
         self.check(b, a)
 
         b = "d.viewitems()  # foo"
-        a = "d.items()  # foo"
+        a = "from six import viewitems\nviewitems(d)  # foo"
         self.check(b, a)
 
     def test_unchanged(self):
@@ -4475,36 +4494,36 @@ class Test_dict(FixerTestCase):
 
     def test_01(self):
         b = "d.keys()"
-        a = "list(d.keys())"
+        a = "list(d)"
         self.check(b, a)
 
         b = "a[0].foo().keys()"
-        a = "list(a[0].foo().keys())"
+        a = "list(a[0].foo())"
         self.check(b, a)
 
     def test_02(self):
         b = "d.items()"
-        a = "list(d.items())"
+        a = "from future.utils import listitems\nlistitems(d)"
         self.check(b, a)
 
     def test_03(self):
         b = "d.values()"
-        a = "list(d.values())"
+        a = "from future.utils import listvalues\nlistvalues(d)"
         self.check(b, a)
 
     def test_04(self):
         b = "d.iterkeys()"
-        a = "iter(d.keys())"
+        a = "from six import iterkeys\niterkeys(d)"
         self.check(b, a)
 
     def test_05(self):
         b = "d.iteritems()"
-        a = "iter(d.items())"
+        a = "from six import iteritems\niteritems(d)"
         self.check(b, a)
 
     def test_06(self):
         b = "d.itervalues()"
-        a = "iter(d.values())"
+        a = "from six import itervalues\nitervalues(d)"
         self.check(b, a)
 
     def test_07(self):
@@ -4517,120 +4536,120 @@ class Test_dict(FixerTestCase):
 
     def test_09(self):
         b = "iter(d.keys())"
-        a = "iter(list(d.keys()))"
+        a = "iter(list(d))"
         self.check(b, a)
 
     def test_10(self):
         b = "foo(d.keys())"
-        a = "foo(list(d.keys()))"
+        a = "foo(list(d))"
         self.check(b, a)
 
     def test_11(self):
         b = "for i in d.keys(): print i"
-        a = "for i in list(d.keys()): print i"
+        a = "for i in list(d): print i"
         self.check(b, a)
 
     def test_12(self):
         b = "for i in d.iterkeys(): print i"
-        a = "for i in d.keys(): print i"
+        a = "from six import iterkeys\nfor i in iterkeys(d): print i"
         self.check(b, a)
 
     def test_13(self):
         b = "[i for i in d.keys()]"
-        a = "[i for i in list(d.keys())]"
+        a = "[i for i in list(d)]"
         self.check(b, a)
 
     def test_14(self):
         b = "[i for i in d.iterkeys()]"
-        a = "[i for i in d.keys()]"
+        a = "from six import iterkeys\n[i for i in iterkeys(d)]"
         self.check(b, a)
 
     def test_15(self):
         b = "(i for i in d.keys())"
-        a = "(i for i in list(d.keys()))"
+        a = "(i for i in list(d))"
         self.check(b, a)
 
     def test_16(self):
         b = "(i for i in d.iterkeys())"
-        a = "(i for i in d.keys())"
+        a = "from six import iterkeys\n(i for i in iterkeys(d))"
         self.check(b, a)
 
     def test_17(self):
         b = "iter(d.iterkeys())"
-        a = "iter(d.keys())"
+        a = "from six import iterkeys\niter(iterkeys(d))"
         self.check(b, a)
 
     def test_18(self):
         b = "list(d.iterkeys())"
-        a = "list(d.keys())"
+        a = "from six import iterkeys\nlist(iterkeys(d))"
         self.check(b, a)
 
     def test_19(self):
         b = "sorted(d.iterkeys())"
-        a = "sorted(d.keys())"
+        a = "from six import iterkeys\nsorted(iterkeys(d))"
         self.check(b, a)
 
     def test_20(self):
         b = "foo(d.iterkeys())"
-        a = "foo(iter(d.keys()))"
+        a = "from six import iterkeys\nfoo(iterkeys(d))"
         self.check(b, a)
 
     def test_21(self):
         b = "print h.iterkeys().next()"
-        a = "print iter(h.keys()).next()"
+        a = "from six import iterkeys\nprint iterkeys(h).next()"
         self.check(b, a)
 
     def test_22(self):
         b = "print h.keys()[0]"
-        a = "print list(h.keys())[0]"
+        a = "print list(h)[0]"
         self.check(b, a)
 
     def test_23(self):
         b = "print list(h.iterkeys().next())"
-        a = "print list(iter(h.keys()).next())"
+        a = "from six import iterkeys\nprint list(iterkeys(h).next())"
         self.check(b, a)
 
     def test_24(self):
         b = "for x in h.keys()[0]: print x"
-        a = "for x in list(h.keys())[0]: print x"
+        a = "for x in list(h)[0]: print x"
         self.check(b, a)
 
     def test_25(self):
         b = "d.viewkeys()"
-        a = "d.keys()"
+        a = "from six import viewkeys\nviewkeys(d)"
         self.check(b, a)
 
     def test_26(self):
         b = "d.viewitems()"
-        a = "d.items()"
+        a = "from six import viewitems\nviewitems(d)"
         self.check(b, a)
 
     def test_27(self):
         b = "d.viewvalues()"
-        a = "d.values()"
+        a = "from six import viewvalues\nviewvalues(d)"
         self.check(b, a)
 
     def test_28(self):
         b = "[i for i in d.viewkeys()]"
-        a = "[i for i in d.keys()]"
+        a = "from six import viewkeys\n[i for i in viewkeys(d)]"
         self.check(b, a)
 
     def test_29(self):
         b = "(i for i in d.viewkeys())"
-        a = "(i for i in d.keys())"
+        a = "from six import viewkeys\n(i for i in viewkeys(d))"
         self.check(b, a)
 
     def test_30(self):
         b = "iter(d.viewkeys())"
-        a = "iter(d.keys())"
+        a = "from six import viewkeys\niter(viewkeys(d))"
         self.check(b, a)
 
     def test_31(self):
         b = "list(d.viewkeys())"
-        a = "list(d.keys())"
+        a = "from six import viewkeys\nlist(viewkeys(d))"
         self.check(b, a)
 
     def test_32(self):
         b = "sorted(d.viewkeys())"
-        a = "sorted(d.keys())"
+        a = "from six import viewkeys\nsorted(viewkeys(d))"
         self.check(b, a)
