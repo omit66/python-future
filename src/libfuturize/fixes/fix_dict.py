@@ -55,7 +55,7 @@ class FixDict(fixer_base.BaseFix):
         isview = method_name.startswith(u"view")
         head = [n.clone() for n in head]
         tail = [n.clone() for n in tail]
-        # not changes necessary if the calls is in a special context
+        # no changes neccessary if the call is in a special context
         special = not tail and self.in_special_context(node, isiter)
         new = pytree.Node(syms.power, head)
         new.prefix = u""
