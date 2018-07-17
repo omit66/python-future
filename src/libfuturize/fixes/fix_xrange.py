@@ -28,8 +28,8 @@ class FixXrange(fixer_base.BaseFix):
 
         elif name.value == u'range':
             # range in PY2 and list(range) in PY3
-            touch_import_top(None, 'future.past', node)
-            name.replace(Name(u"future.past.range", name.prefix))
+            touch_import_top(None, 'past.builtins', node)
+            name.replace(Name(u"past.builtins.range", name.prefix))
 
         else:
             raise ValueError(repr(name))
