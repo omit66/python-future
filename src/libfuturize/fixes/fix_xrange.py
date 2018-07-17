@@ -8,11 +8,11 @@ the python2 range with the xrange behavior.
 
 # Local imports
 from lib2to3 import fixer_base
-from lib2to3.fixer_util import Call, Name
+from lib2to3.fixer_util import Name
 from libfuturize.fixer_util import touch_import_top
 
 
-class FixXrangeWithSix(fixer_base.BaseFix):
+class FixXrange(fixer_base.BaseFix):
     BM_compatible = True
     PATTERN = """
               power<
