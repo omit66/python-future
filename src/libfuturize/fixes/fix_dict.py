@@ -24,7 +24,7 @@ set(), any(), all(), sum().
 
 # Local imports
 from lib2to3 import patcomp, pytree, fixer_base
-from lib2to3.fixer_util import Name, Call, Dot
+from lib2to3.fixer_util import Name, Call
 from lib2to3 import fixer_util
 from libfuturize.fixer_util import touch_import_top
 
@@ -71,7 +71,7 @@ class FixDict(fixer_base.BaseFix):
             # ensure to return a list in python 3
             new = Call(Name(u"list" + method_name), [new])
             touch_import_top('future.utils', 'list' + method_name,
-                                        node)
+                             node)
         else:
             # method_name is "keys"; removed it and cast the dict to list
             new = Call(Name(u"list"), [new])
@@ -93,10 +93,6 @@ class FixDict(fixer_base.BaseFix):
            self.p1.match(node.parent.parent, results) and
            results["node"] is node):
 
-            if isiter:
-                # iter(d.iterkeys()) -> iter(d.keys()), etc.
-                return results["func"].value in iter_exempt
-            else:
-                # list(d.keys()) -> list(d.keys()), etc.
-                return results["func"].value in fixer_util.consuming_calls
+            # list(d.keys()) -> list(d.keys()), etc.
+            return results["func"].value in fixer_util.consuming_calls
         return False
