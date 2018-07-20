@@ -1,5 +1,6 @@
 # Copyright 2007 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
+# This work has been extended by CONTACT Software GmbH.
 
 """Fixer for dict methods.
 
@@ -56,22 +57,22 @@ class FixDict(fixer_base.BaseFix):
         head = [n.clone() for n in head]
         tail = [n.clone() for n in tail]
         # no changes neccessary if the call is in a special context
-        special = not tail and self.in_special_context(node, isiter)
+        self.parentIsList = False
+        special = not tail and self.in_special_context(node, isiter or isview)
         new = pytree.Node(syms.power, head)
         new.prefix = u""
         if isiter or isview:
             # replace the method with the six function
             # e.g. d.iteritems() -> from six import iteritems\n iteritems(d)
-            new = Call(Name(method_name), [new])
-            touch_import_top('six', method_name, node)
+            new = Call(Name('six.' + method_name), [new])
+            touch_import_top(None, 'six', node)
         elif special:
             # it is not neccessary to change this case
             return node
         elif method_name in ("items", "values"):
             # ensure to return a list in python 3
-            new = Call(Name(u"list" + method_name), [new])
-            touch_import_top('future.utils', 'list' + method_name,
-                             node)
+            new = Call(Name(u"pycompat.list" + method_name), [new])
+            touch_import_top(None, 'pycompat', node)
         else:
             # method_name is "keys"; removed it and cast the dict to list
             new = Call(Name(u"list"), [new])
@@ -81,7 +82,7 @@ class FixDict(fixer_base.BaseFix):
         new.prefix = node.prefix
         return new
 
-    P1 = "power< func=NAME trailer< '(' node=any ')' > any* >"
+    P1 = "parent=power< func=NAME trailer< '(' node=any ')' > any* >"
     p1 = patcomp.compile_pattern(P1)
 
     def in_special_context(self, node, isiter):
@@ -93,6 +94,11 @@ class FixDict(fixer_base.BaseFix):
            self.p1.match(node.parent.parent, results) and
            results["node"] is node):
 
-            # list(d.keys()) -> list(d.keys()), etc.
+            # list(d.keys()) -> list(d), etc.
+            # py2 keys() return a list and list(d.keys()) would be inefficcient
+            if results['func'].value == 'list' and not isiter:
+                # remove the call list if the child is not an iterator
+                results['parent'].replace([node])
+                return False
             return results["func"].value in fixer_util.consuming_calls
         return False

@@ -14,23 +14,23 @@ class Test_dict(FixerTestCase):
         self.check(b, a)
 
         b = "if   d. items  (  )  : pass"
-        a = "from future.utils import listitems\nif   listitems(d)  : pass"
+        a = "import pycompat\nif   pycompat.listitems(d)  : pass"
         self.check(b, a)
 
         b = "if   d. iterkeys  ( )  : pass"
-        a = "from six import iterkeys\nif   iterkeys(d)  : pass"
+        a = "import six\nif   six.iterkeys(d)  : pass"
         self.check(b, a)
 
         b = "[i for i in    d.  iterkeys(  )  ]"
-        a = "from six import iterkeys\n[i for i in    iterkeys(d)  ]"
+        a = "import six\n[i for i in    six.iterkeys(d)  ]"
         self.check(b, a)
 
         b = "if   d. viewkeys  ( )  : pass"
-        a = "from six import viewkeys\nif   viewkeys(d)  : pass"
+        a = "import six\nif   six.viewkeys(d)  : pass"
         self.check(b, a)
 
         b = "[i for i in    d.  viewkeys(  )  ]"
-        a = "from six import viewkeys\n[i for i in    viewkeys(d)  ]"
+        a = "import six\n[i for i in    six.viewkeys(d)  ]"
         self.check(b, a)
 
     def test_trailing_comment(self):
@@ -39,31 +39,31 @@ class Test_dict(FixerTestCase):
         self.check(b, a)
 
         b = "d.items()  # foo"
-        a = "from future.utils import listitems\nlistitems(d)  # foo"
+        a = "import pycompat\npycompat.listitems(d)  # foo"
         self.check(b, a)
 
         b = "d.iterkeys()  # foo"
-        a = "from six import iterkeys\niterkeys(d)  # foo"
+        a = "import six\nsix.iterkeys(d)  # foo"
         self.check(b, a)
 
         b = """[i for i in d.iterkeys() # foo
                ]"""
-        a = """from six import iterkeys\n[i for i in iterkeys(d) # foo
+        a = """import six\n[i for i in six.iterkeys(d) # foo
                ]"""
         self.check(b, a)
 
         b = """[i for i in d.iterkeys() # foo
                ]"""
-        a = """from six import iterkeys\n[i for i in iterkeys(d) # foo
+        a = """import six\n[i for i in six.iterkeys(d) # foo
                ]"""
         self.check(b, a)
 
         b = "d.viewitems()  # foo"
-        a = "from six import viewitems\nviewitems(d)  # foo"
+        a = "import six\nsix.viewitems(d)  # foo"
         self.check(b, a)
 
     def test_unchanged(self):
-        for wrapper in fixer_util.consuming_calls:
+        for wrapper in fixer_util.consuming_calls.difference(set(['list'])):
             s = "s = %s(d.keys())" % wrapper
             self.unchanged(s)
 
@@ -84,31 +84,31 @@ class Test_dict(FixerTestCase):
 
     def test_02(self):
         b = "d.items()"
-        a = "from future.utils import listitems\nlistitems(d)"
+        a = "import pycompat\npycompat.listitems(d)"
         self.check(b, a)
 
     def test_03(self):
         b = "d.values()"
-        a = "from future.utils import listvalues\nlistvalues(d)"
+        a = "import pycompat\npycompat.listvalues(d)"
         self.check(b, a)
 
     def test_04(self):
         b = "d.iterkeys()"
-        a = "from six import iterkeys\niterkeys(d)"
+        a = "import six\nsix.iterkeys(d)"
         self.check(b, a)
 
     def test_05(self):
         b = "d.iteritems()"
-        a = "from six import iteritems\niteritems(d)"
+        a = "import six\nsix.iteritems(d)"
         self.check(b, a)
 
     def test_06(self):
         b = "d.itervalues()"
-        a = "from six import itervalues\nitervalues(d)"
+        a = "import six\nsix.itervalues(d)"
         self.check(b, a)
 
     def test_07(self):
-        s = "list(d.keys())"
+        s = "list(d)"
         self.unchanged(s)
 
     def test_08(self):
@@ -132,7 +132,7 @@ class Test_dict(FixerTestCase):
 
     def test_12(self):
         b = "for i in d.iterkeys(): print i"
-        a = "from six import iterkeys\nfor i in iterkeys(d): print i"
+        a = "import six\nfor i in six.iterkeys(d): print i"
         self.check(b, a)
 
     def test_13(self):
@@ -142,7 +142,7 @@ class Test_dict(FixerTestCase):
 
     def test_14(self):
         b = "[i for i in d.iterkeys()]"
-        a = "from six import iterkeys\n[i for i in iterkeys(d)]"
+        a = "import six\n[i for i in six.iterkeys(d)]"
         self.check(b, a)
 
     def test_15(self):
@@ -152,32 +152,32 @@ class Test_dict(FixerTestCase):
 
     def test_16(self):
         b = "(i for i in d.iterkeys())"
-        a = "from six import iterkeys\n(i for i in iterkeys(d))"
+        a = "import six\n(i for i in six.iterkeys(d))"
         self.check(b, a)
 
     def test_17(self):
         b = "iter(d.iterkeys())"
-        a = "from six import iterkeys\niter(iterkeys(d))"
+        a = "import six\niter(six.iterkeys(d))"
         self.check(b, a)
 
     def test_18(self):
         b = "list(d.iterkeys())"
-        a = "from six import iterkeys\nlist(iterkeys(d))"
+        a = "import six\nlist(six.iterkeys(d))"
         self.check(b, a)
 
     def test_19(self):
         b = "sorted(d.iterkeys())"
-        a = "from six import iterkeys\nsorted(iterkeys(d))"
+        a = "import six\nsorted(six.iterkeys(d))"
         self.check(b, a)
 
     def test_20(self):
         b = "foo(d.iterkeys())"
-        a = "from six import iterkeys\nfoo(iterkeys(d))"
+        a = "import six\nfoo(six.iterkeys(d))"
         self.check(b, a)
 
     def test_21(self):
         b = "print h.iterkeys().next()"
-        a = "from six import iterkeys\nprint iterkeys(h).next()"
+        a = "import six\nprint six.iterkeys(h).next()"
         self.check(b, a)
 
     def test_22(self):
@@ -187,7 +187,7 @@ class Test_dict(FixerTestCase):
 
     def test_23(self):
         b = "print list(h.iterkeys().next())"
-        a = "from six import iterkeys\nprint list(iterkeys(h).next())"
+        a = "import six\nprint list(six.iterkeys(h).next())"
         self.check(b, a)
 
     def test_24(self):
@@ -197,40 +197,55 @@ class Test_dict(FixerTestCase):
 
     def test_25(self):
         b = "d.viewkeys()"
-        a = "from six import viewkeys\nviewkeys(d)"
+        a = "import six\nsix.viewkeys(d)"
         self.check(b, a)
 
     def test_26(self):
         b = "d.viewitems()"
-        a = "from six import viewitems\nviewitems(d)"
+        a = "import six\nsix.viewitems(d)"
         self.check(b, a)
 
     def test_27(self):
         b = "d.viewvalues()"
-        a = "from six import viewvalues\nviewvalues(d)"
+        a = "import six\nsix.viewvalues(d)"
         self.check(b, a)
 
     def test_28(self):
         b = "[i for i in d.viewkeys()]"
-        a = "from six import viewkeys\n[i for i in viewkeys(d)]"
+        a = "import six\n[i for i in six.viewkeys(d)]"
         self.check(b, a)
 
     def test_29(self):
         b = "(i for i in d.viewkeys())"
-        a = "from six import viewkeys\n(i for i in viewkeys(d))"
+        a = "import six\n(i for i in six.viewkeys(d))"
         self.check(b, a)
 
     def test_30(self):
         b = "iter(d.viewkeys())"
-        a = "from six import viewkeys\niter(viewkeys(d))"
+        a = "import six\niter(six.viewkeys(d))"
         self.check(b, a)
 
     def test_31(self):
         b = "list(d.viewkeys())"
-        a = "from six import viewkeys\nlist(viewkeys(d))"
+        a = "import six\nlist(six.viewkeys(d))"
         self.check(b, a)
 
     def test_32(self):
         b = "sorted(d.viewkeys())"
-        a = "from six import viewkeys\nsorted(viewkeys(d))"
+        a = "import six\nsorted(six.viewkeys(d))"
+        self.check(b, a)
+
+    def test_33(self):
+        b = "list(d.keys())"
+        a = "list(d)"
+        self.check(b, a)
+
+    def test_34(self):
+        b = "list(d.items())"
+        a = "import pycompat\npycompat.listitems(d)"
+        self.check(b, a)
+
+    def test_35(self):
+        b = "list(d.values())"
+        a = "import pycompat\npycompat.listvalues(d)"
         self.check(b, a)
