@@ -1,7 +1,8 @@
 # Copyright 2007 Google, Inc. All Rights Reserved.
 # Licensed to PSF under a Contributor Agreement.
+# Extended by CONTACT Software GmbH
 
-"""Fixer that changes map(F, ...) into past.builtins.map(F, ...) unless there
+"""Fixer that changes map(F, ...) into list(six.moves.map(F, ...)) unless there
 exists a 'from future_builtins import map' statement in the top-level
 namespace.
 
@@ -21,7 +22,7 @@ soon as the shortest argument is exhausted.
 
 # Local imports
 from lib2to3.pgen2 import token
-from lib2to3 import fixer_base
+from lib2to3 import fixer_base, pytree
 from lib2to3.fixer_util import Name, Call, ListComp, in_special_context
 from lib2to3.pygram import python_symbols as syms
 from libfuturize.fixer_util import touch_import_top
@@ -52,7 +53,8 @@ class FixMap(fixer_base.ConditionalFix):
     >
     |
     power<
-        name='map' trailer< '(' [arglist=any] ')' >
+        name='map' parens=trailer< '(' [arglist=any] ')' >
+        rest=any*
     >
     """
 
@@ -91,8 +93,13 @@ class FixMap(fixer_base.ConditionalFix):
                     return None
                 name.replace(Name(u"six.moves.map", name.prefix))
                 touch_import_top(None, u"six.moves", node)
-                new = node.clone()
+                parens = results["parens"].clone()
+                new = pytree.Node(self.syms.power,
+                                  [Name(u"six.moves.map"), parens])
             new.prefix = u""
             new = Call(Name(u"list"), [new])
+            if "rest" in results:
+                for child in results["rest"]:
+                    new.append_child(child)
         new.prefix = node.prefix
         return new

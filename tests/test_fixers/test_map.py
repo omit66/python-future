@@ -50,6 +50,11 @@ class Test_map(FixerTestCase):
         a = """x = [x+1 for x in range(4)]"""
         self.check(b, a)
 
+        # XXX This (rare) case is not supported
+        b = """x = map(f, 'abc')[0]"""
+        a = """import six.moves\nx = list(six.moves.map(f, 'abc'))[0]"""
+        self.check(b, a)
+
         b = """
             foo()
             # foo
@@ -61,12 +66,8 @@ class Test_map(FixerTestCase):
             # foo
             list(six.moves.map(f, x))
             """
-        self.warns(b, a, "You should use a for loop here")
 
-        # XXX This (rare) case is not supported
-#         b = """x = map(f, 'abc')[0]"""
-#         a = """x = list(map(f, 'abc'))[0]"""
-#         self.check(b, a)
+        self.warns(b, a, "You should use a for loop here")
 
     def test_map_nochange(self):
         a = """b.join(map(f, 'abc'))"""
