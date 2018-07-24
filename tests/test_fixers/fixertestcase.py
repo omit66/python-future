@@ -90,7 +90,11 @@ class FixerTestCase(unittest.TestCase):
     def assert_runs_after(self, *names):
         fixes = [self.fixer]
         fixes.extend(names)
-        r = get_refactorer("lib2to3", fixes)
+        # fixer is in lib2to3 or in libfutuirze
+        try:
+            r = get_refactorer("lib2to3", fixes)
+        except ImportError:
+            r = get_refactorer("libfuturize", fixes)
         (pre, post) = r.get_fixers()
         n = "fix_" + self.fixer
         if post and post[-1].__class__.__module__.endswith(n):
