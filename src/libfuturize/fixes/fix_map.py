@@ -34,7 +34,7 @@ class FixMap(fixer_base.ConditionalFix):
     PATTERN = """
     map_none=power<
         name='map'
-        trailer< '(' arglist< 'None' ',' arg=any [','] > ')' >
+        parens=trailer< '(' arglist< 'None' ',' arg=any [','] > ')' >
     >
     |
     map_lambda=power<
