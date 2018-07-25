@@ -1,0 +1,12 @@
+from fixertestcase import FixerTestCase
+
+
+class Test_basestring(FixerTestCase):
+    fixer = "basestring_six"
+
+    def test_basestring(self):
+        b = """isinstance(x, basestring)"""
+        a = """import six\nisinstance(x, six.string_types)"""
+        self.check(b, a)
+
+
