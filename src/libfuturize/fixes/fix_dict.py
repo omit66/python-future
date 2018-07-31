@@ -27,7 +27,7 @@ set(), any(), all(), sum().
 from lib2to3 import patcomp, pytree, fixer_base
 from lib2to3.fixer_util import Name, Call
 from lib2to3 import fixer_util
-from libfuturize.fixer_util import touch_import_top
+from lib2to3.fixer_util import touch_import
 
 
 iter_exempt = fixer_util.consuming_calls | set(["iter"])
@@ -65,14 +65,14 @@ class FixDict(fixer_base.BaseFix):
             # replace the method with the six function
             # e.g. d.iteritems() -> from six import iteritems\n iteritems(d)
             new = Call(Name('six.' + method_name), [new])
-            touch_import_top(None, 'six', node)
+            touch_import(None, 'six', node)
         elif special:
             # it is not neccessary to change this case
             return node
         elif method_name in ("items", "values"):
             # ensure to return a list in python 3
             new = Call(Name(u"pycompat.list" + method_name), [new])
-            touch_import_top(None, 'pycompat', node)
+            touch_import(None, 'pycompat', node)
         else:
             # method_name is "keys"; removed it and cast the dict to list
             new = Call(Name(u"list"), [new])

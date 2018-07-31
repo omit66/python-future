@@ -6,7 +6,7 @@ and add 'import six'
 from lib2to3 import fixer_base
 from lib2to3.fixer_util import Name
 
-from libfuturize.fixer_util import touch_import_top
+from lib2to3.fixer_util import touch_import
 
 
 class FixBasestringSix(fixer_base.BaseFix):
@@ -15,5 +15,5 @@ class FixBasestringSix(fixer_base.BaseFix):
     PATTERN = "'basestring'"
 
     def transform(self, node, results):
-        touch_import_top(None, u'six', node)
+        touch_import(None, u'six', node)
         return Name(u'six.string_types', node.prefix)

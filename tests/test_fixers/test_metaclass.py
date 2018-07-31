@@ -31,8 +31,9 @@ class Test_metaclass(FixerTestCase):
             # hi
             __metaclass__ = AppleMeta
         """
-        a = """
+        a = """\
         import six
+
         class X(six.with_metaclass(AppleMeta)):
             # hi
             pass
@@ -44,8 +45,9 @@ class Test_metaclass(FixerTestCase):
             __metaclass__ = Meta
             # Bedtime!
         """
-        a = """
+        a = """\
         import six
+
         class X(six.with_metaclass(Meta)):
             pass
             # Bedtime!
@@ -59,8 +61,9 @@ class Test_metaclass(FixerTestCase):
             __metaclass__ = Q
             pass
         """
-        a = """
+        a = """\
         import six
+
         class X(six.with_metaclass(Q)):
             pass
         """
@@ -78,8 +81,9 @@ class Test_metaclass(FixerTestCase):
             __metaclass__ = Meta
             bar = 7
         """
-        a = """
+        a = """\
         import six
+
         class X(six.with_metaclass(Meta, object)):
             bar = 7
         """
@@ -89,8 +93,9 @@ class Test_metaclass(FixerTestCase):
         class X:
             __metaclass__ = Meta; x = 4; g = 23
         """
-        a = """
+        a = """\
         import six
+
         class X(six.with_metaclass(Meta)):
             x = 4; g = 23
         """
@@ -103,8 +108,9 @@ class Test_metaclass(FixerTestCase):
             bar = 7
             __metaclass__ = Meta
         """
-        a = """
+        a = """\
         import six
+
         class X(six.with_metaclass(Meta, object)):
             bar = 7
         """
@@ -117,8 +123,9 @@ class Test_metaclass(FixerTestCase):
             __metaclass__ = Meta
             bar = 7
         """
-        a = """
+        a = """\
         import six
+
         class X(six.with_metaclass(Meta, clsA, clsB)):
             bar = 7
         """
@@ -134,8 +141,9 @@ class Test_metaclass(FixerTestCase):
         class X(expression(2 + 4)):
             __metaclass__ = Meta
         """
-        a = """
+        a = """\
         import six
+
         class X(six.with_metaclass(Meta, expression(2 + 4))):
             pass
         """
@@ -145,8 +153,9 @@ class Test_metaclass(FixerTestCase):
         class X(expression(2 + 4), x**4):
             __metaclass__ = Meta
         """
-        a = """
+        a = """\
         import six
+
         class X(six.with_metaclass(Meta, expression(2 + 4), x**4)):
             pass
         """
@@ -157,8 +166,9 @@ class Test_metaclass(FixerTestCase):
             __metaclass__ = Meta
             save.py = 23
         """
-        a = """
+        a = """\
         import six
+
         class X(six.with_metaclass(Meta)):
             save.py = 23
         """
@@ -172,8 +182,9 @@ class Test_metaclass(FixerTestCase):
             __metaclass__ = B
             bar = 7
         """
-        a = """
+        a = """\
         import six
+
         class X(six.with_metaclass(B)):
             bar = 7
         """

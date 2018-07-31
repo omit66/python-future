@@ -14,7 +14,7 @@
 from lib2to3 import fixer_base
 from lib2to3.fixer_util import BlankLine, syms, token
 
-from libfuturize.fixer_util import touch_import_top
+from lib2to3.fixer_util import touch_import
 
 
 class FixItertoolsImports(fixer_base.BaseFix):
@@ -47,11 +47,11 @@ class FixItertoolsImports(fixer_base.BaseFix):
                 if as_name:
                     # keep the import as
 
-                    touch_import_top(u'six.moves',
-                                     member_name[1:] + u" as " + as_name,
-                                     node)
+                    touch_import(u'six.moves',
+                                 member_name[1:] + u" as " + as_name,
+                                 node)
                 else:
-                    touch_import_top(None, u'six.moves', node)
+                    touch_import(None, u'six.moves', node)
                 child.remove()
 
         # Make sure the import statement is still sane

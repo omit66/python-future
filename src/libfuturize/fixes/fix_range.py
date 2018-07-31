@@ -8,7 +8,7 @@ range() -> list(six.moves.range())
 
 from lib2to3 import fixer_base, patcomp
 from lib2to3.fixer_util import Name, Call, consuming_calls
-from libfuturize.fixer_util import touch_import_top
+from lib2to3.fixer_util import touch_import
 
 
 class FixRange(fixer_base.ConditionalFix, fixer_base.BaseFix):
@@ -30,7 +30,7 @@ class FixRange(fixer_base.ConditionalFix, fixer_base.BaseFix):
 
     def transform(self, node, results):
         name = results["name"]
-        touch_import_top(None, u"six.moves", node)
+        touch_import(None, u"six.moves", node)
         if name.value == u"xrange":
             return self.transform_xrange(node, results)
         elif name.value == u"range":

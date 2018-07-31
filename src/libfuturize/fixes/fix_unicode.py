@@ -1,6 +1,6 @@
 from lib2to3 import fixer_base
 from lib2to3.fixer_util import Name
-from libfuturize.fixer_util import touch_import_top
+from lib2to3.fixer_util import touch_import
 
 
 class FixUnicode(fixer_base.BaseFix):
@@ -8,5 +8,5 @@ class FixUnicode(fixer_base.BaseFix):
     PATTERN = """'unicode'"""
 
     def transform(self, node, results):
-        touch_import_top(None, u'six', node)
+        touch_import(None, u'six', node)
         return Name(u'six.text_type', prefix=node.prefix)

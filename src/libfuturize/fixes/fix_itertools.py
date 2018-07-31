@@ -20,7 +20,7 @@
 from lib2to3 import fixer_base
 from lib2to3.fixer_util import Name
 
-from libfuturize.fixer_util import touch_import_top
+from lib2to3.fixer_util import touch_import
 
 
 class FixItertools(fixer_base.BaseFix):
@@ -38,7 +38,7 @@ class FixItertools(fixer_base.BaseFix):
     run_order = 6
 
     def transform(self, node, results):
-        touch_import_top(None, u'six.moves', node)
+        touch_import(None, u'six.moves', node)
         func = results['func'][0]
         if 'it' in results:
             dot, it = (results['dot'], results['it'])

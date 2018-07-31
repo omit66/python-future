@@ -8,7 +8,7 @@ reduce() -> six.reduce()
 """
 
 from lib2to3 import fixer_base
-from libfuturize.fixer_util import touch_import_top, Name
+from lib2to3.fixer_util import touch_import, Name
 
 
 class FixReduce(fixer_base.BaseFix):
@@ -33,4 +33,4 @@ class FixReduce(fixer_base.BaseFix):
     def transform(self, node, results):
         name  = results['name']
         name.replace(Name(u'six.reduce', name.prefix))
-        touch_import_top(None, u'six', node)
+        touch_import(None, u'six', node)

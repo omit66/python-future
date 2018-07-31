@@ -21,7 +21,7 @@ from lib2to3 import fixer_base
 from lib2to3.fixer_util import Name, token
 from lib2to3.pytree import Node, Leaf
 
-from libfuturize.fixer_util import touch_import_top
+from lib2to3.fixer_util import touch_import
 
 
 class FixLongTypechecks(fixer_base.BaseFix):
@@ -48,9 +48,9 @@ class FixLongTypechecks(fixer_base.BaseFix):
                 comp.changed()
             int_type.value = u"six.integer_types"
             int_type.changed()
-            touch_import_top(None, u'six', node)
+            touch_import(None, u'six', node)
         elif 'tup' in results:
-            touch_import_top(None, u'six', node)
+            touch_import(None, u'six', node)
             args = results['args']
             tup = results['tup']
 

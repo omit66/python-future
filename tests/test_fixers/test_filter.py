@@ -77,13 +77,13 @@ class Test_filter(FixerTestCase):
         a = """(x for x in filter(f, 'abc'))"""
         self.unchanged(a)
 
-    def test_future_builtins(self):
+    def test_six_moves(self):
         a = "from six.moves import filter, spam, filter; filter(f, 'ham')"
         self.unchanged(a)
 
-        b = """from six.moves import spam; x = filter(f, 'abc')"""
-        a = """import six.moves\nfrom six.moves import spam;"""\
-            """ x = list(six.moves.filter(f, 'abc'))"""
+        b = """from six.moves import spam\nx = filter(f, 'abc')"""
+        a = """from six.moves import spam\nimport six.moves\n"""\
+            """x = list(six.moves.filter(f, 'abc'))"""
         self.check(b, a)
 
         a = "from six.moves import *; filter(f, 'ham')"

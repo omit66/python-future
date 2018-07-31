@@ -17,8 +17,7 @@ Python 2.6 figure it out.
 # Local imports
 from lib2to3 import fixer_base, pytree
 from lib2to3.fixer_util import Name, Call, ListComp, in_special_context
-
-from libfuturize.fixer_util import touch_import_top
+from lib2to3.fixer_util import touch_import
 
 
 class FixFilter(fixer_base.ConditionalFix):
@@ -75,7 +74,7 @@ class FixFilter(fixer_base.ConditionalFix):
             if in_special_context(node):
                 return None
             func = results['func']
-            touch_import_top(None, u'six.moves', node)
+            touch_import(None, u'six.moves', node)
             new = pytree.Node(self.syms.power,
                               [Name(u"six.moves.filter", func.prefix),
                                results['args'].clone()])

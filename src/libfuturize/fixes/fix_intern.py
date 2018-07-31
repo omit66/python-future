@@ -11,7 +11,7 @@ from lib2to3 import pytree
 from lib2to3 import fixer_base
 from lib2to3.fixer_util import Name, Attr
 
-from libfuturize.fixer_util import touch_import_top
+from lib2to3.fixer_util import touch_import
 
 
 class FixIntern(fixer_base.BaseFix):
@@ -56,5 +56,5 @@ class FixIntern(fixer_base.BaseFix):
                                         newarglist,
                                         results["rpar"].clone()])] + after)
         new.prefix = node.prefix
-        touch_import_top(None, u'six', node)
+        touch_import(None, u'six', node)
         return new

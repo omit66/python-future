@@ -25,7 +25,7 @@ from lib2to3.pgen2 import token
 from lib2to3 import fixer_base, pytree
 from lib2to3.fixer_util import Name, Call, ListComp, in_special_context
 from lib2to3.pygram import python_symbols as syms
-from libfuturize.fixer_util import touch_import_top
+from lib2to3.fixer_util import touch_import
 
 
 class FixMap(fixer_base.ConditionalFix):
@@ -68,7 +68,7 @@ class FixMap(fixer_base.ConditionalFix):
         if node.parent.type == syms.simple_stmt:
             self.warning(node, "You should use a for loop here")
             name.replace(Name(u"six.moves.map", name.prefix))
-            touch_import_top(None, u"six.moves", node)
+            touch_import(None, u"six.moves", node)
             new = node.clone()
             new.prefix = u""
             new = Call(Name(u"list"), [new])
@@ -92,7 +92,7 @@ class FixMap(fixer_base.ConditionalFix):
                 if in_special_context(node):
                     return None
                 name.replace(Name(u"six.moves.map", name.prefix))
-                touch_import_top(None, u"six.moves", node)
+                touch_import(None, u"six.moves", node)
                 parens = results["parens"].clone()
                 new = pytree.Node(self.syms.power,
                                   [Name(u"six.moves.map"), parens])

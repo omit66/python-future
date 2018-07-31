@@ -60,8 +60,9 @@ class Test_map(FixerTestCase):
             # foo
             map(f, x)
             """
-        a = """
+        a = """\
             import six.moves
+
             foo()
             # foo
             list(six.moves.map(f, x))
@@ -113,8 +114,8 @@ class Test_map(FixerTestCase):
         a = "from future_builtins import spam, map, eggs; map(f, 'ham')"
         self.unchanged(a)
 
-        b = """from future_builtins import spam, eggs; x = map(f, 'abc')"""
-        a = """import six.moves\nfrom future_builtins import spam, eggs; """\
+        b = """from future_builtins import spam, eggs\nx = map(f, 'abc')"""
+        a = """from future_builtins import spam, eggs\nimport six.moves\n"""\
             """x = list(six.moves.map(f, 'abc'))"""
         self.check(b, a)
 

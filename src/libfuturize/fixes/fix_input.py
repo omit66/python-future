@@ -12,7 +12,7 @@ from __future__ import absolute_import
 
 from lib2to3 import patcomp, fixer_base
 from lib2to3.fixer_util import Call, Name
-from libfuturize.fixer_util import touch_import_top
+from lib2to3.fixer_util import touch_import
 
 
 class FixInput(fixer_base.ConditionalFix):
@@ -30,7 +30,7 @@ class FixInput(fixer_base.ConditionalFix):
         if self.should_skip(node):
             return
 
-        touch_import_top(None, u'six.moves', node)
+        touch_import(None, u'six.moves', node)
         name = results['name']
         old_name = name.value
         name.replace(Name('six.moves.input', prefix=name.prefix))

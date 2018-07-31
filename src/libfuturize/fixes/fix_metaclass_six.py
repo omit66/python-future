@@ -27,7 +27,7 @@
 from lib2to3 import fixer_base
 from lib2to3.pygram import token
 from lib2to3.fixer_util import Name, syms, Node, Leaf, Call, Comma
-from libfuturize.fixer_util import touch_import_top
+from lib2to3.fixer_util import touch_import
 
 
 def has_metaclass(parent):
@@ -196,7 +196,7 @@ class FixMetaclassSix(fixer_base.BaseFix):
         else:
             raise ValueError("Unexpected class definition")  # pragma: no cover
 
-        touch_import_top(None, u'six', node)
+        touch_import(None, u'six', node)
 
         metaclass = last_metaclass.children[0].children[2].clone()
         metaclass.prefix = u''
