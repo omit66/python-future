@@ -11,16 +11,15 @@ lib2to3_fix_names_stage1 = set([
     'lib2to3.fixes.fix_exec',
     'lib2to3.fixes.fix_exitfunc',
     'lib2to3.fixes.fix_funcattrs',
-    'lib2to3.fixes.fix_has_key',
+    'lib2to3.fixes.fix_has_key', # not safe if you have method has_key
     'lib2to3.fixes.fix_idioms',
     # 'lib2to3.fixes.fix_import',    # makes any implicit relative imports explicit. (Use with ``from __future__ import absolute_import)
     # 'lib2to3.fixes.fix_intern', # created own fixer
     'lib2to3.fixes.fix_isinstance',
-    'lib2to3.fixes.fix_methodattrs',
+    #'lib2to3.fixes.fix_methodattrs',
     'lib2to3.fixes.fix_ne',
     # 'lib2to3.fixes.fix_next',         # would replace ``next`` method names
                                         # with ``__next__``.
-    'lib2to3.fixes.fix_numliterals',    # turns 1L into 1, 0755 into 0o755
     'lib2to3.fixes.fix_paren',
     # 'lib2to3.fixes.fix_print',        # see the libfuturize fixer that also
                                         # adds ``from __future__ import print_function``
@@ -54,6 +53,7 @@ lib2to3_fix_names_stage2 = set([
     #'lib2to3.fixes.fix_itertools',
     #'lib2to3.fixes.fix_itertools_imports',
     #'lib2to3.fixes.fix_filter',
+    'lib2to3.fixes.fix_numliterals',    # turns 1L into 1, 0755 into 0o755
     #'lib2to3.fixes.fix_long',
     #'lib2to3.fixes.fix_map',
     # 'lib2to3.fixes.fix_metaclass', # causes SyntaxError in Py2! Use the one from ``six`` instead
@@ -75,7 +75,6 @@ libfuturize_fix_names_stage1 = set([
                                         # the ``next`` method to ``__next__``.
     'libfuturize.fixes.fix_print_with_import',
     'libfuturize.fixes.fix_raise',
-    'libfuturize.fixes.fix_types',
     # 'libfuturize.fixes.fix_order___future__imports',  # TODO: consolidate to a single line to simplify testing
 ])
 
@@ -99,12 +98,14 @@ libfuturize_fix_names_stage2 = set([
     'libfuturize.fixes.fix_long',
     'libfuturize.fixes.fix_long_typechecks',
     'libfuturize.fixes.fix_metaclass_six',
+    'libfuturize.fixes.fix_methodattrs', # is not complete (im_class is skipped)
     'libfuturize.fixes.fix_map',
     'libfuturize.fixes.fix_newstyle',
     #'libfuturize.fixes.fix_object',
     # 'libfuturize.fixes.fix_order___future__imports',  # TODO: consolidate to a single line to simplify testing
     'libfuturize.fixes.fix_range',
     'libfuturize.fixes.fix_reduce',
+    'libfuturize.fixes.fix_types',
     'libfuturize.fixes.fix_unichr',
     'libfuturize.fixes.fix_unicode',
     'libfuturize.fixes.fix_urllib',
