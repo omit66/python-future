@@ -35,6 +35,8 @@ class FixCmpInline(fixer_base.BaseFix):
         right_n.prefix = u' '
         minus = Leaf(token.MINUS, u'-', prefix=u' ')
         new = Node(self.syms.arith_expr, [left_n, minus, right_n])
+        new = self.trailer(new)
+        new.prefix = node.prefix
         return new
 
     def trailer(self, node):
