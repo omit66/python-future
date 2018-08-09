@@ -4,7 +4,7 @@
 
 """Fixer for reduce().
 
-reduce() -> six.reduce()
+reduce() -> six.moves.reduce()
 """
 
 from lib2to3 import fixer_base
@@ -32,5 +32,5 @@ class FixReduce(fixer_base.BaseFix):
 
     def transform(self, node, results):
         name  = results['name']
-        name.replace(Name(u'six.reduce', name.prefix))
+        name.replace(Name(u'six.moves.reduce', name.prefix))
         touch_import(None, u'six', node)
