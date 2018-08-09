@@ -58,7 +58,6 @@ lib2to3_fix_names_stage2 = set([
     #'lib2to3.fixes.fix_map',
     # 'lib2to3.fixes.fix_metaclass', # causes SyntaxError in Py2! Use the one from ``six`` instead
     'lib2to3.fixes.fix_next',
-    'lib2to3.fixes.fix_nonzero',     # TODO: cause this to import ``object`` and/or add a decorator for mapping __bool__ to __nonzero__
     'lib2to3.fixes.fix_operator',    # we will need support for this by e.g. extending the Py2 operator module to provide those functions in Py3
     #'lib2to3.fixes.fix_raw_input',
     # 'lib2to3.fixes.fix_unicode',   # strips off the u'' prefix, which removes a potentially helpful source of information for disambiguating unicode/byte strings
@@ -84,7 +83,7 @@ libfuturize_fix_names_stage2 = set([
     'libfuturize.fixes.fix_chr',
     'libfuturize.fixes.fix_cmp_inline',
     'libfuturize.fixes.fix_dict',
-    'libfuturize.fixes.fix_division',
+    #'libfuturize.fixes.fix_classic_division',
     'libfuturize.fixes.fix_execfile',
     'libfuturize.fixes.fix_filter',
     #'libfuturize.fixes.fix_future_builtins',
@@ -101,6 +100,7 @@ libfuturize_fix_names_stage2 = set([
     'libfuturize.fixes.fix_methodattrs', # is not complete (im_class is skipped)
     'libfuturize.fixes.fix_map',
     'libfuturize.fixes.fix_newstyle',
+    'libfuturize.fixes.fix_nonzero',
     #'libfuturize.fixes.fix_object',
     # 'libfuturize.fixes.fix_order___future__imports',  # TODO: consolidate to a single line to simplify testing
     'libfuturize.fixes.fix_range',
