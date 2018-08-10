@@ -11,18 +11,18 @@ class Test_methodattrs(FixerTestCase):
             b = "a.im_%s" % attr
             if attr == "class":
                 # a = "a.__self__.__class__"
-                self.unchanged(b)
+                self.unchanged(b, ignore_warnings=True)
             else:
                 a = "a.__%s__" % attr
-            self.check(b, a)
+                self.check(b, a)
 
             b = "self.foo.im_%s.foo_bar" % attr
             if attr == "class":
                 # a = "self.foo.__self__.__class__.foo_bar"
-                self.unchanged(b)
+                self.unchanged(b, ignore_warnings=True)
             else:
                 a = "self.foo.__%s__.foo_bar" % attr
-            self.check(b, a)
+                self.check(b, a)
 
     def test_unchanged(self):
         for attr in self.attrs:

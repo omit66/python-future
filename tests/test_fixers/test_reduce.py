@@ -6,18 +6,18 @@ class Test_reduce(FixerTestCase):
 
     def test_simple_call(self):
         b = "reduce(a, b, c)"
-        a = "import six\nsix.moves.reduce(a, b, c)"
+        a = "import six.moves\nsix.moves.reduce(a, b, c)"
         self.check(b, a)
 
     def test_bug_7253(self):
         # fix_tuple_params was being bad and orphaning nodes in the tree.
         b = "def x(arg): reduce(sum, [])"
-        a = "import six\ndef x(arg): six.moves.reduce(sum, [])"
+        a = "import six.moves\ndef x(arg): six.moves.reduce(sum, [])"
         self.check(b, a)
 
     def test_call_with_lambda(self):
         b = "reduce(lambda x, y: x + y, seq)"
-        a = "import six\nsix.moves.reduce(lambda x, y: x + y, seq)"
+        a = "import six.moves\nsix.moves.reduce(lambda x, y: x + y, seq)"
         self.check(b, a)
 
     def test_unchanged(self):
