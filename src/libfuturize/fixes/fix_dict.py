@@ -5,16 +5,16 @@
 """Fixer for dict methods.
 
 d.keys() -> list(d)
-d.items() -> from future.utils import listitems\nlistitems(d)
-d.values() -> from future.utils import listvalues\nlistvalues(d)
+d.items() -> import six\nlist(six.iteritems(d))
+d.values() -> import six\nlist(six.itervalues(d))
 
-d.iterkeys() -> from six import iterkeys\niterkeys(d)
-d.iteritems() -> from six import iteritems\niteritems(d)
-d.itervalues() -> from six import itervalues\nitervalues(d)
+d.iterkeys() ->  import six\nsix.iterkeys(d)
+d.iteritems() ->  import six\nsix.iteritems(d)
+d.itervalues() ->  import six\nsix.itervalues(d)
 
-d.viewkeys() -> from six import viewkeys\nviewkeys(d)
-d.viewitems() -> from six import viewitems\nviewitems(d)
-d.viewvalues() -> from six import viewvalues\nviewvalues(d)
+d.viewkeys() ->  import six\nsix.viewkeys(d)
+d.viewitems() ->  import six\nsix.viewitems(d)
+d.viewvalues() ->  import six\nsix.viewvalues(d)
 
 Except in certain very specific contexts: the iter() can be dropped
 when the context is list(), sorted(), iter() or for...in; the list()
@@ -71,8 +71,9 @@ class FixDict(fixer_base.BaseFix):
             return node
         elif method_name in ("items", "values"):
             # ensure to return a list in python 3
-            new = Call(Name(u"pycompat.list" + method_name), [new])
-            touch_import(None, 'pycompat', node)
+            new = Call(Name(u"six.iter" + method_name), [new])
+            new = Call(Name('list'), [new])
+            touch_import(None, 'six', node)
         else:
             # method_name is "keys"; removed it and cast the dict to list
             new = Call(Name(u"list"), [new])

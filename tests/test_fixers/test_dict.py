@@ -14,7 +14,7 @@ class Test_dict(FixerTestCase):
         self.check(b, a)
 
         b = "if   d. items  (  )  : pass"
-        a = "import pycompat\nif   pycompat.listitems(d)  : pass"
+        a = "import six\nif   list(six.iteritems(d))  : pass"
         self.check(b, a)
 
         b = "if   d. iterkeys  ( )  : pass"
@@ -39,7 +39,7 @@ class Test_dict(FixerTestCase):
         self.check(b, a)
 
         b = "d.items()  # foo"
-        a = "import pycompat\npycompat.listitems(d)  # foo"
+        a = "import six\nlist(six.iteritems(d))  # foo"
         self.check(b, a)
 
         b = "d.iterkeys()  # foo"
@@ -84,12 +84,12 @@ class Test_dict(FixerTestCase):
 
     def test_02(self):
         b = "d.items()"
-        a = "import pycompat\npycompat.listitems(d)"
+        a = "import six\nlist(six.iteritems(d))"
         self.check(b, a)
 
     def test_03(self):
         b = "d.values()"
-        a = "import pycompat\npycompat.listvalues(d)"
+        a = "import six\nlist(six.itervalues(d))"
         self.check(b, a)
 
     def test_04(self):
@@ -242,10 +242,10 @@ class Test_dict(FixerTestCase):
 
     def test_34(self):
         b = "list(d.items())"
-        a = "import pycompat\npycompat.listitems(d)"
+        a = "import six\nlist(six.iteritems(d))"
         self.check(b, a)
 
     def test_35(self):
         b = "list(d.values())"
-        a = "import pycompat\npycompat.listvalues(d)"
+        a = "import six\nlist(six.itervalues(d))"
         self.check(b, a)
