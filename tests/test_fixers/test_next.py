@@ -194,6 +194,36 @@ class Test_next(FixerTestCase):
             """
         self.check(b, a)
 
+    def test_method_5(self):
+        b = """
+            class A():
+                def next(self):
+                    pass
+            """
+        a = """\
+            import six
+
+            class A(six.Iterator):
+                def __next__(self):
+                    pass
+            """
+        self.check(b, a)
+
+    def test_method_6(self):
+        b = """
+            class A(pkg.AClass):
+                def next(self):
+                    pass
+            """
+        a = """\
+            import six
+
+            class A(six.Iterator, pkg.AClass):
+                def __next__(self):
+                    pass
+            """
+        self.check(b, a)
+
     def test_method_unchanged(self):
         s = """
             class A:

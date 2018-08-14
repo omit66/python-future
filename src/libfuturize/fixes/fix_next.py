@@ -129,7 +129,7 @@ def add_iterator_subclass(node, results):
     subs = []
     if (node.children[idx-1].value == ')'):
         pos = 2
-        while idx - pos >= 0 and not node.children[idx-pos].value == '(':
+        while idx - pos >= 0 and not node.children[idx-pos].type == token.LPAR:
             subs.append(node.children[idx - pos])
             pos += 1
         del node.children[idx-pos:idx]
