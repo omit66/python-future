@@ -91,9 +91,11 @@ class FixLongTypechecks(fixer_base.BaseFix):
         # no comma
         num_childs = 0
         for child in children:
-            val = child.value
-            if val in ('int', 'long'):
-                child.remove()
-            elif child.type != token.COMMA:
+            if hasattr(child, 'value'):
+                val = child.value
+                if val in ('int', 'long'):
+                    child.remove()
+                    continue
+            if child.type != token.COMMA:
                 num_childs = num_childs + 1
         return num_childs
