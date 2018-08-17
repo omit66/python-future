@@ -14,5 +14,5 @@ class FixUnichr(fixer_base.ConditionalFix):
         if self.should_skip(node):
             return
         if is_probably_builtin(node):
-            touch_import(None, u'six.moves', node)
-            node.replace(Name(u'six.moves.unichr', node.prefix))
+            touch_import(None, u'six', node)
+            node.replace(Name(u'six.unichr', node.prefix))

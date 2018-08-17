@@ -34,7 +34,8 @@ class Test_metaclass(FixerTestCase):
         a = """\
         import six
 
-        class X(six.with_metaclass(AppleMeta)):
+        @six.add_metaclass(AppleMeta)
+        class X:
             # hi
             pass
         """
@@ -48,7 +49,8 @@ class Test_metaclass(FixerTestCase):
         a = """\
         import six
 
-        class X(six.with_metaclass(Meta)):
+        @six.add_metaclass(Meta)
+        class X:
             pass
             # Bedtime!
         """
@@ -64,7 +66,8 @@ class Test_metaclass(FixerTestCase):
         a = """\
         import six
 
-        class X(six.with_metaclass(Q)):
+        @six.add_metaclass(Q)
+        class X():
             pass
         """
         self.check(b, a)
@@ -72,7 +75,7 @@ class Test_metaclass(FixerTestCase):
     def test_meta(self):
         # one parent class, no body
         b = """class X(object): __metaclass__ = Q"""
-        a = """import six\nclass X(six.with_metaclass(Q, object)): pass"""
+        a = """import six\n@six.add_metaclass(Q)\nclass X(object): pass"""
         self.check(b, a)
 
         # one parent, simple body
@@ -84,7 +87,8 @@ class Test_metaclass(FixerTestCase):
         a = """\
         import six
 
-        class X(six.with_metaclass(Meta, object)):
+        @six.add_metaclass(Meta)
+        class X(object):
             bar = 7
         """
         self.check(b, a)
@@ -96,7 +100,8 @@ class Test_metaclass(FixerTestCase):
         a = """\
         import six
 
-        class X(six.with_metaclass(Meta)):
+        @six.add_metaclass(Meta)
+        class X:
             x = 4; g = 23
         """
         self.check(b, a)
@@ -111,7 +116,8 @@ class Test_metaclass(FixerTestCase):
         a = """\
         import six
 
-        class X(six.with_metaclass(Meta, object)):
+        @six.add_metaclass(Meta)
+        class X(object):
             bar = 7
         """
         self.check(b, a)
@@ -126,14 +132,15 @@ class Test_metaclass(FixerTestCase):
         a = """\
         import six
 
-        class X(six.with_metaclass(Meta, clsA, clsB)):
+        @six.add_metaclass(Meta)
+        class X(clsA, clsB):
             bar = 7
         """
         self.check(b, a)
 
         # keywords in the class statement
         b = """class m(a, arg=23): __metaclass__ = Meta"""
-        a = """import six\nclass m(six.with_metaclass(Meta, a, arg=23)): """\
+        a = """import six\n@six.add_metaclass(Meta)\nclass m(a, arg=23): """\
             """pass"""
         self.check(b, a)
 
@@ -144,7 +151,8 @@ class Test_metaclass(FixerTestCase):
         a = """\
         import six
 
-        class X(six.with_metaclass(Meta, expression(2 + 4))):
+        @six.add_metaclass(Meta)
+        class X(expression(2 + 4)):
             pass
         """
         self.check(b, a)
@@ -156,7 +164,8 @@ class Test_metaclass(FixerTestCase):
         a = """\
         import six
 
-        class X(six.with_metaclass(Meta, expression(2 + 4), x**4)):
+        @six.add_metaclass(Meta)
+        class X(expression(2 + 4), x**4):
             pass
         """
         self.check(b, a)
@@ -169,7 +178,8 @@ class Test_metaclass(FixerTestCase):
         a = """\
         import six
 
-        class X(six.with_metaclass(Meta)):
+        @six.add_metaclass(Meta)
+        class X:
             save.py = 23
         """
         self.check(b, a)
@@ -185,7 +195,8 @@ class Test_metaclass(FixerTestCase):
         a = """\
         import six
 
-        class X(six.with_metaclass(B)):
+        @six.add_metaclass(B)
+        class X():
             bar = 7
         """
         self.check(b, a)

@@ -26,7 +26,7 @@
 # Local imports
 from lib2to3 import fixer_base
 from lib2to3.pygram import token
-from lib2to3.fixer_util import Name, syms, Node, Leaf, Call, Comma
+from lib2to3.fixer_util import Name, syms, Node, Leaf, Call
 from lib2to3.fixer_util import touch_import
 
 
@@ -189,29 +189,19 @@ class FixMetaclassSix(fixer_base.BaseFix):
         elif len(node.children) == 4:
             # Node(classdef, ['class', 'name', ':', suite])
             #                 0        1       2    3
-            arglist = Node(syms.arglist, [])
-            node.insert_child(2, Leaf(token.RPAR, u')'))
-            node.insert_child(2, arglist)
-            node.insert_child(2, Leaf(token.LPAR, u'('))
+            # arglist = Node(syms.arglist, [])
+            # node.insert_child(2, Leaf(token.RPAR, u')'))
+            # node.insert_child(2, arglist)
+            # node.insert_child(2, Leaf(token.LPAR, u'('))
+            pass
         else:
             raise ValueError("Unexpected class definition")  # pragma: no cover
-
-        touch_import(None, u'six', node)
 
         metaclass = last_metaclass.children[0].children[2].clone()
         metaclass.prefix = u''
 
+        touch_import(None, u'six', node)
         arguments = [metaclass]
-
-        if arglist.children:
-            bases = arglist.clone()
-            bases.prefix = u' '
-            arguments.extend([Comma(), bases])
-
-        arglist.replace(Call(
-            Name(u'six.with_metaclass', prefix=arglist.prefix),
-            arguments
-        ))
 
         fixup_indent(suite)
 
@@ -233,3 +223,10 @@ class FixMetaclassSix(fixer_base.BaseFix):
             pass_leaf = Leaf(text_type, u'pass')
             suite.insert_child(-1, pass_leaf)
             suite.insert_child(-1, Leaf(token.NEWLINE, u'\n'))
+
+        new = Node(self.syms.simple_stmt, [Call(Name(u'@six.add_metaclass'),
+                                                arguments),
+                                           Leaf(token.NEWLINE, u'\n')])
+        new.prefix = node.prefix
+        node.prefix = u''
+        node.replace([new, node.clone()])
