@@ -68,7 +68,7 @@ class FixMap(fixer_base.ConditionalFix):
         if node.parent.type == syms.simple_stmt:
             self.warning(node, "You should use a for loop here")
             name.replace(Name(u"six.moves.map", name.prefix))
-            touch_import(None, u"six.moves", node)
+            touch_import(None, u'six', node)
             new = node.clone()
             new.prefix = u""
             new = Call(Name(u"list"), [new])
@@ -92,7 +92,7 @@ class FixMap(fixer_base.ConditionalFix):
                 if in_special_context(node):
                     return None
                 name.replace(Name(u"six.moves.map", name.prefix))
-                touch_import(None, u"six.moves", node)
+                touch_import(None, u'six', node)
                 parens = results["parens"].clone()
                 new = pytree.Node(self.syms.power,
                                   [Name(u"six.moves.map"), parens])

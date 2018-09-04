@@ -10,24 +10,24 @@ class Test_getcwdu(FixerTestCase):
 
     def test_basic(self):
         b = """os.getcwdu"""
-        a = """import six.moves\nsix.moves.getcwdu"""
+        a = """import six\nsix.moves.getcwdu"""
         self.check(b, a)
 
         b = """os.getcwdu()"""
-        a = """import six.moves\nsix.moves.getcwdu()"""
+        a = """import six\nsix.moves.getcwdu()"""
         self.check(b, a)
 
         b = """meth = os.getcwdu"""
-        a = """import six.moves\nmeth = six.moves.getcwdu"""
+        a = """import six\nmeth = six.moves.getcwdu"""
         self.check(b, a)
 
         b = """os.getcwdu(args)"""
-        a = """import six.moves\nsix.moves.getcwdu(args)"""
+        a = """import six\nsix.moves.getcwdu(args)"""
         self.check(b, a)
 
     def test_comment(self):
         b = """os.getcwdu() # Foo"""
-        a = """import six.moves\nsix.moves.getcwdu() # Foo"""
+        a = """import six\nsix.moves.getcwdu() # Foo"""
         self.check(b, a)
 
     def test_unchanged(self):
@@ -46,7 +46,7 @@ class Test_getcwdu(FixerTestCase):
                 os.getcwdu()
             """
         a = """\
-            import six.moves
+            import six
 
             if 1:
                 six.moves.getcwdu()
@@ -55,27 +55,27 @@ class Test_getcwdu(FixerTestCase):
 
     def test_multilation(self):
         b = """os .getcwdu()"""
-        a = """import six.moves\nsix.moves .getcwdu()"""
+        a = """import six\nsix.moves .getcwdu()"""
         self.check(b, a)
 
         b = """os.  getcwdu"""
-        a = """import six.moves\nsix.moves.  getcwdu"""
+        a = """import six\nsix.moves.  getcwdu"""
         self.check(b, a)
 
         b = """os.getcwdu (  )"""
-        a = """import six.moves\nsix.moves.getcwdu (  )"""
+        a = """import six\nsix.moves.getcwdu (  )"""
         self.check(b, a)
 
     def test_imported_getcwdu(self):
         b = """from os import getcwdu\ngetcwdu()"""
-        a = """from os import getcwdu\nimport six.moves\nsix.moves.getcwdu()"""
+        a = """from os import getcwdu\nimport six\nsix.moves.getcwdu()"""
         self.check(b, a)
 
         # cannot remove the import
         b = """import os.getcwdu\nos.getcwdu()"""
-        a = """import os.getcwdu\nimport six.moves\nsix.moves.getcwdu()"""
+        a = """import os.getcwdu\nimport six\nsix.moves.getcwdu()"""
         self.check(b, a)
 
         b = """from os import *\ngetcwdu()"""
-        a = """from os import *\nimport six.moves\nsix.moves.getcwdu()"""
+        a = """from os import *\nimport six\nsix.moves.getcwdu()"""
         self.check(b, a)

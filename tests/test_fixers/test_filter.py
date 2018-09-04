@@ -6,7 +6,7 @@ class Test_filter(FixerTestCase):
 
     def test_prefix_preservation(self):
         b = """x =   filter(    foo,     'abc'   )"""
-        a = """import six.moves\n"""\
+        a = """import six\n"""\
             """x =   list(six.moves.filter(    foo,     'abc'   ))"""
         self.check(b, a)
 
@@ -20,7 +20,7 @@ class Test_filter(FixerTestCase):
         self.check(b, a)
 
         b = """x = len(filter(f, 'abc'))"""
-        a = """import six.moves\nx = len(list(six.moves.filter(f, 'abc')))"""
+        a = """import six\nx = len(list(six.moves.filter(f, 'abc')))"""
         self.check(b, a)
 
         b = """x = filter(lambda x: x%2 == 0, range(10))"""
@@ -34,7 +34,7 @@ class Test_filter(FixerTestCase):
 
         # XXX This (rare) case is not supported
         b = """x = filter(f, 'abc')[0]"""
-        a = """import six.moves\nx = list(six.moves.filter(f, 'abc'))[0]"""
+        a = """import six\nx = list(six.moves.filter(f, 'abc'))[0]"""
         self.check(b, a)
 
     def test_filter_nochange(self):
@@ -82,7 +82,7 @@ class Test_filter(FixerTestCase):
         self.unchanged(a)
 
         b = """from six.moves import spam\nx = filter(f, 'abc')"""
-        a = """from six.moves import spam\nimport six.moves\n"""\
+        a = """from six.moves import spam\nimport six\n"""\
             """x = list(six.moves.filter(f, 'abc'))"""
         self.check(b, a)
 

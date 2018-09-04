@@ -10,11 +10,11 @@ class Test_zip(FixerTestCase):
 
     def test_zip_basic(self):
         b = """x = zip(a, b, c)"""
-        a = """import six.moves\nx = list(six.moves.zip(a, b, c))"""
+        a = """import six\nx = list(six.moves.zip(a, b, c))"""
         self.check(b, a)
 
         b = """x = len(zip(a, b))"""
-        a = """import six.moves\nx = len(list(six.moves.zip(a, b)))"""
+        a = """import six\nx = len(list(six.moves.zip(a, b)))"""
         self.check(b, a)
 
     def test_zip_nochange(self):
@@ -62,7 +62,7 @@ class Test_zip(FixerTestCase):
         self.unchanged(a)
 
         b = """from six.moves import spam, eggs\nx = zip(a, b)"""
-        a = """from six.moves import spam, eggs\nimport six.moves\n""" \
+        a = """from six.moves import spam, eggs\nimport six\n""" \
             """x = list(six.moves.zip(a, b))"""
         self.check(b, a)
 

@@ -32,7 +32,7 @@ class FixZip(fixer_base.ConditionalFix):
         if in_special_context(node):
             return None
 
-        touch_import(None, u'six.moves', node)
+        touch_import(None, u'six', node)
         name = results['name']
         name.replace(Name(u'six.moves.zip', name.prefix))
         new = node.clone()

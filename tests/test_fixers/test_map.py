@@ -13,13 +13,13 @@ class Test_map(FixerTestCase):
 
     def test_prefix_preservation(self):
         b = """x =    map(   f,    'abc'   )"""
-        a = """import six.moves\n""" \
+        a = """import six\n""" \
             """x =    list(six.moves.map(   f,    'abc'   ))"""
         self.check(b, a)
 
     def test_trailing_comment(self):
         b = """x = map(f, 'abc')   #   foo"""
-        a = """import six.moves\nx = list(six.moves.map(f, 'abc'))   #   foo"""
+        a = """import six\nx = list(six.moves.map(f, 'abc'))   #   foo"""
         self.check(b, a)
 
     def test_None_with_multiple_arguments(self):
@@ -29,11 +29,11 @@ class Test_map(FixerTestCase):
 
     def test_map_basic(self):
         b = """x = map(f, 'abc')"""
-        a = """import six.moves\nx = list(six.moves.map(f, 'abc'))"""
+        a = """import six\nx = list(six.moves.map(f, 'abc'))"""
         self.check(b, a)
 
         b = """x = len(map(f, 'abc', 'def'))"""
-        a = """import six.moves\n"""\
+        a = """import six\n"""\
             """x = len(list(six.moves.map(f, 'abc', 'def')))"""
         self.check(b, a)
 
@@ -52,7 +52,7 @@ class Test_map(FixerTestCase):
 
         # XXX This (rare) case is not supported
         b = """x = map(f, 'abc')[0]"""
-        a = """import six.moves\nx = list(six.moves.map(f, 'abc'))[0]"""
+        a = """import six\nx = list(six.moves.map(f, 'abc'))[0]"""
         self.check(b, a)
 
         b = """
@@ -61,7 +61,7 @@ class Test_map(FixerTestCase):
             map(f, x)
             """
         a = """\
-            import six.moves
+            import six
 
             foo()
             # foo
@@ -115,7 +115,7 @@ class Test_map(FixerTestCase):
         self.unchanged(a)
 
         b = """from future_builtins import spam, eggs\nx = map(f, 'abc')"""
-        a = """from future_builtins import spam, eggs\nimport six.moves\n"""\
+        a = """from future_builtins import spam, eggs\nimport six\n"""\
             """x = list(six.moves.map(f, 'abc'))"""
         self.check(b, a)
 

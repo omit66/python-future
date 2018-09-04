@@ -30,7 +30,7 @@ class FixInput(fixer_base.ConditionalFix):
         if self.should_skip(node):
             return
 
-        touch_import(None, u'six.moves', node)
+        touch_import(None, u'six', node)
         name = results['name']
         old_name = name.value
         name.replace(Name('six.moves.input', prefix=name.prefix))

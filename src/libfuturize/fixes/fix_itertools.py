@@ -38,7 +38,7 @@ class FixItertools(fixer_base.BaseFix):
     run_order = 6
 
     def transform(self, node, results):
-        touch_import(None, u'six.moves', node)
+        touch_import(None, u'six', node)
         func = results['func'][0]
         if 'it' in results:
             dot, it = (results['dot'], results['it'])

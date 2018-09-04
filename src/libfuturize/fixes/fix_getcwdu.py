@@ -23,18 +23,18 @@ class FixGetcwdu(fixer_base.BaseFix):
 
     def transform(self, node, results):
         os_import = find_binding("getcwdu", find_root(node), "os")
-        new_mod = u"six.moves"
+        new_mod = u"six"
         name = results["name"]
         if os_import:
             # we can find only from imports...
             # TODO: remove import and change getcwdu
             # os_import.parent.remove()
             touch_import(None, new_mod, node)
-            new_name = new_mod + '.' + name.value
+            new_name = new_mod + '.moves.' + name.value
             name.replace(Name(new_name, prefix=name.prefix))
         elif "mod" in results:
             touch_import(None, new_mod, node)
             mod = results["mod"]
-            mod.replace(Name(new_mod, prefix=mod.prefix))
+            mod.replace(Name(new_mod + '.moves', prefix=mod.prefix))
 
         return node

@@ -33,4 +33,4 @@ class FixReduce(fixer_base.BaseFix):
     def transform(self, node, results):
         name = results['name']
         name.replace(Name(u'six.moves.reduce', name.prefix))
-        touch_import(None, u'six.moves', node)
+        touch_import(None, u'six', node)

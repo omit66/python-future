@@ -47,7 +47,7 @@ _TYPE_MAPPING = {
         'TupleType': 'tuple',
         'TypeType': 'type',
         'UnicodeType': 'six.text_type',
-        'XRangeType': 'range',
+        'XRangeType': 'six.moves.range',
     }
 
 _pats = ["power< 'types' trailer< '.' name='%s' > >"

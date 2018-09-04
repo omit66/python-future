@@ -18,7 +18,7 @@
 # Local imports
 from lib2to3.fixes.fix_imports import alternates, FixImports
 from lib2to3.fixer_util import (Name, Comma, FromImport, Newline,
-                                find_indentation, Node, syms)
+                                find_indentation, Node, syms, does_tree_import)
 
 MAPPING = {"urllib":  [
                 ("six.moves.urllib.request",
@@ -92,13 +92,15 @@ class FixUrllib(FixImports):
         import_mod = results.get("module")
         pref = import_mod.prefix
 
-        names = []
-
-        # create a Node list of the replacement modules
-        for name in MAPPING[import_mod.value][:-1]:
-            names.extend([Name(name[0], prefix=pref), Comma()])
-        names.append(Name(MAPPING[import_mod.value][-1][0], prefix=pref))
-        import_mod.replace(names)
+        if does_tree_import(None, 'six', node):
+            # remove node with newline (parent == simple_stmt)
+            if hasattr(node, 'parent'):
+                if node.parent.type == syms.simple_stmt:
+                    node.parent.remove()
+            else:
+                node.remove()
+        else:
+            import_mod.replace(Name('six', pref))
 
     def transform_member(self, node, results):
         """Transform for imports of specific module elements. Replaces

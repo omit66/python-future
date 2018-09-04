@@ -51,7 +51,7 @@ class FixItertoolsImports(fixer_base.BaseFix):
                                  member_name[1:] + u" as " + as_name,
                                  node)
                 else:
-                    touch_import(None, u'six.moves', node)
+                    touch_import(None, u'six', node)
                 child.remove()
 
         # Make sure the import statement is still sane

@@ -1,5 +1,4 @@
 from fixertestcase import FixerTestCase
-from operator import itemgetter
 
 
 class Test_urllib(FixerTestCase):
@@ -9,7 +8,7 @@ class Test_urllib(FixerTestCase):
     def test_import_module(self):
         for old, changes in self.modules.items():
             b = "import %s" % old
-            a = "import %s" % ", ".join(map(itemgetter(0), changes))
+            a = "import six"
             self.check(b, a)
 
     def test_import_from(self):
@@ -88,23 +87,21 @@ def foo():
         for old, changes in self.modules.items():
             for new, members in changes:
                 for member in members:
-                    new_import = ", ".join([n for (n, mems)
-                                            in self.modules[old]])
                     b = """
                         import %s
                         foo(%s.%s)
                         """ % (old, old, member)
                     a = """
-                        import %s
+                        import six
                         foo(%s.%s)
-                        """ % (new_import, new, member)
+                        """ % (new, member)
                     self.check(b, a)
                     b = """
                         import %s
                         %s.%s(%s.%s)
                         """ % (old, old, member, old, member)
                     a = """
-                        import %s
+                        import six
                         %s.%s(%s.%s)
-                        """ % (new_import, new, member, new, member)
+                        """ % (new, member, new, member)
                     self.check(b, a)

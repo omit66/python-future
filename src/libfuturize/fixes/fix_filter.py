@@ -74,7 +74,7 @@ class FixFilter(fixer_base.ConditionalFix):
             if in_special_context(node):
                 return None
             func = results['func']
-            touch_import(None, u'six.moves', node)
+            touch_import(None, u'six', node)
             new = pytree.Node(self.syms.power,
                               [Name(u"six.moves.filter", func.prefix),
                                results['args'].clone()])

@@ -12,10 +12,10 @@ lib2to3_fix_names_stage1 = set([
     'lib2to3.fixes.fix_exitfunc',
     'lib2to3.fixes.fix_funcattrs',
     'lib2to3.fixes.fix_has_key', # not safe if you have method has_key
-    'lib2to3.fixes.fix_idioms',
+    # 'lib2to3.fixes.fix_idioms',
     # 'lib2to3.fixes.fix_import',    # makes any implicit relative imports explicit. (Use with ``from __future__ import absolute_import)
     # 'lib2to3.fixes.fix_intern', # created own fixer
-    'lib2to3.fixes.fix_isinstance',
+    # 'lib2to3.fixes.fix_isinstance',
     #'lib2to3.fixes.fix_methodattrs',
     'lib2to3.fixes.fix_ne',
     # 'lib2to3.fixes.fix_next',         # would replace ``next`` method names
@@ -33,7 +33,7 @@ lib2to3_fix_names_stage1 = set([
     'lib2to3.fixes.fix_throw',
     'lib2to3.fixes.fix_tuple_params',
     # 'lib2to3.fixes.fix_types', # selber
-    'lib2to3.fixes.fix_ws_comma',       # can perhaps decrease readability: see issue #58
+    # 'lib2to3.fixes.fix_ws_comma',       # can perhaps decrease readability: see issue #58
     'lib2to3.fixes.fix_xreadlines',
 ])
 
@@ -57,7 +57,7 @@ lib2to3_fix_names_stage2 = set([
     #'lib2to3.fixes.fix_long',
     #'lib2to3.fixes.fix_map',
     # 'lib2to3.fixes.fix_metaclass', # causes SyntaxError in Py2! Use the one from ``six`` instead
-    'lib2to3.fixes.fix_next',
+    # 'lib2to3.fixes.fix_next',
     'lib2to3.fixes.fix_operator',    # we will need support for this by e.g. extending the Py2 operator module to provide those functions in Py3
     #'lib2to3.fixes.fix_raw_input',
     # 'lib2to3.fixes.fix_unicode',   # strips off the u'' prefix, which removes a potentially helpful source of information for disambiguating unicode/byte strings
@@ -69,7 +69,7 @@ lib2to3_fix_names_stage2 = set([
 libfuturize_fix_names_stage1 = set([
     # 'libfuturize.fixes.fix_absolute_import',
     'libfuturize.fixes.fix_intern',
-    'libfuturize.fixes.fix_next_call',  # obj.next() -> next(obj). Unlike
+    # 'libfuturize.fixes.fix_next_call',  # obj.next() -> next(obj). Unlike
                                         # lib2to3.fixes.fix_next, doesn't change
                                         # the ``next`` method to ``__next__``.
     'libfuturize.fixes.fix_print_with_import',
@@ -99,7 +99,8 @@ libfuturize_fix_names_stage2 = set([
     'libfuturize.fixes.fix_metaclass_six',
     'libfuturize.fixes.fix_methodattrs', # is not complete (im_class is skipped)
     'libfuturize.fixes.fix_map',
-    'libfuturize.fixes.fix_newstyle',
+    # 'libfuturize.fixes.fix_newstyle', this is not safe
+    'libfuturize.fixes.fix_next_call',
     'libfuturize.fixes.fix_nonzero',
     #'libfuturize.fixes.fix_object',
     # 'libfuturize.fixes.fix_order___future__imports',  # TODO: consolidate to a single line to simplify testing
@@ -110,7 +111,7 @@ libfuturize_fix_names_stage2 = set([
     'libfuturize.fixes.fix_unicode',
     'libfuturize.fixes.fix_urllib',
     # 'libfuturize.fixes.fix_unicode_literals_import',
-    'libfuturize.fixes.fix_xrange',  # custom one because of a bug with Py3.3's lib2to3
+    # 'libfuturize.fixes.fix_xrange',  # custom one because of a bug with Py3.3's lib2to3
     'libfuturize.fixes.fix_zip',
 ])
 

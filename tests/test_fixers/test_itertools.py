@@ -18,39 +18,39 @@ class Test_itertools(FixerTestCase):
         # A simple example -- test_1 covers exactly the same thing,
         # but it's not quite as clear.
         b = "itertools.izip(a, b)"
-        a = "import six.moves\nsix.moves.zip(a, b)"
+        a = "import six\nsix.moves.zip(a, b)"
         self.check(b, a)
 
     def test_1(self):
         b = """%s(f, a)"""
-        a = """import six.moves\nsix.moves.%s(f, a)"""
+        a = """import six\nsix.moves.%s(f, a)"""
         self.checkall(b, a)
 
     def test_qualified(self):
         b = """itertools.ifilterfalse(a, b)"""
-        a = """import six.moves\nsix.moves.filterfalse(a, b)"""
+        a = """import six\nsix.moves.filterfalse(a, b)"""
         self.check(b, a)
 
         b = """itertools.izip_longest(a, b)"""
-        a = """import six.moves\nsix.moves.zip_longest(a, b)"""
+        a = """import six\nsix.moves.zip_longest(a, b)"""
         self.check(b, a)
 
     def test_2(self):
         b = """ifilterfalse(a, b)"""
-        a = """import six.moves\nsix.moves.filterfalse(a, b)"""
+        a = """import six\nsix.moves.filterfalse(a, b)"""
         self.check(b, a)
 
         b = """izip_longest(a, b)"""
-        a = """import six.moves\nsix.moves.zip_longest(a, b)"""
+        a = """import six\nsix.moves.zip_longest(a, b)"""
         self.check(b, a)
 
     def test_space(self):
         b = """%s ( f, a )"""
-        a = """import six.moves\nsix.moves.%s ( f, a )"""
+        a = """import six\nsix.moves.%s ( f, a )"""
         self.checkall(b, a)
 
         b = """f(    %s(f, a) )"""
-        a = """import six.moves\nf(    six.moves.%s(f, a) )"""
+        a = """import six\nf(    six.moves.%s(f, a) )"""
         self.checkall(b, a)
 
     def test_run_order(self):
